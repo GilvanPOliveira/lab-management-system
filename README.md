@@ -97,19 +97,6 @@ lab-management-system/
 
 ##
 
-## Stack
-
-[![My Skills](https://skillicons.dev/icons?i=vue,ts,vite,tailwind,postgres\&perline=5)](https://skillicons.dev)
-
-* Vue 3
-* TypeScript
-* Vite
-* Tailwind CSS
-* Supabase
-* PostgreSQL
-
-##
-
 ## Como executar
 
 ```bash
@@ -151,13 +138,16 @@ npm run dev
 
 ##
 
-## Diferenciais
+## Stack
 
-* regras críticas implementadas no banco
-* uso de RLS
-* migrations versionadas
-* separação de responsabilidades
-* foco em código limpo
+[![My Skills](https://skillicons.dev/icons?i=vue,ts,vite,tailwind,postgres\&perline=5)](https://skillicons.dev)
+
+* Vue 3
+* TypeScript
+* Vite
+* Tailwind CSS
+* Supabase
+* PostgreSQL
 
 ##
 
