@@ -1,180 +1,167 @@
 # Lab Management System
 
-Sistema de gestão de estoque operacional desenvolvido como laboratório técnico, com foco em regras de negócio, segurança e organização de código.
+Sistema de gestão de estoque desenvolvido como laboratório técnico, com foco em regras de negócio, modelagem de dados e organização de código.
 
 ##
 
-## Sobre o projeto
+## Sobre
 
-Aplicação web para controle de estoque com:
+Aplicação web para controle operacional de estoque, permitindo cadastro de entidades, movimentações e acompanhamento do estado dos produtos.
 
-- cadastro de produtos, categorias e fornecedores
-- registro de movimentações (entrada, saída e ajuste)
-- controle de acesso por perfil (admin e operator)
-- relatórios operacionais com filtros
-- alertas de estoque baixo
-- exportação de dados em CSV
-
-##
-
-## Stack
-
-- Vue 3 + TypeScript
-- Vite
-- Tailwind CSS v3
-- Supabase (Postgres + Auth + RLS)
-- Supabase CLI (migrations)
-
-##
-
-## Funcionalidades
-
-### Estrutura
-- CRUD de categorias
-- CRUD de fornecedores
-- CRUD de produtos
-
-### Operação
-- entradas de estoque
-- saídas de estoque
-- ajustes com justificativa
-- histórico imutável de movimentações
-
-### Controle de acesso
-- autenticação por e-mail/senha
-- perfis:
-  - `admin`: acesso total
-  - `operator`: acesso operacional
-
-### Relatórios
-- estoque consolidado
-- histórico de movimentações
-- filtros por categoria, fornecedor e período
-- exportação CSV
-
-### Alertas
-- produtos com estoque baixo
-- produtos inativos
-
-##
-
-## Regras de negócio
-
-- não permite estoque negativo  
-- não permite movimentar produto inativo  
-- quantidade deve ser maior que zero  
-- ajuste exige justificativa  
-- movimentações são registradas via função segura no banco  
-- histórico não pode ser editado  
-
-##
-
-## Como rodar o projeto
-
-### 1. Clone o repositório
-
-```bash
-git clone <url-do-repositorio>
-cd lab-management-system
-```
-
-### 2. Instale as dependências
-
-```bash
-npm install
-```
-
-### 3. Configure o .env
-
-Crie um arquivo .env na raiz:
-
-```bash 
-VITE_SUPABASE_URL=https://SEU_PROJECT_REF.supabase.co
-VITE_SUPABASE_ANON_KEY=SUA_ANON_KEY
-```
-
-### 4. Configure o Supabase (remoto)
-
-```bash
-npx supabase login
-npx supabase link --project-ref SEU_PROJECT_REF
-npx supabase db push
-```
-
-### 5. Rode o projeto
-
-```bash
-npm run dev
-```
-
-## 
-
-## Como testar
-
-### Fluxo recomendado
-1. Crie uma conta
-2. Defina manualmente o usuário como `admin` no banco (tabela `profiles`)
-3. Cadastre:
-    - categorias
-    - fornecedores
-    - produtos
-4. Faça movimentações:
-    - entrada
-    - saída
-    - ajuste
-5. Acesse:
-    - relatórios
-    - alertas
-
-##
-
-## Estrutura do projeto
-
-```bash
-src/
-  components/
-  composables/
-  lib/
-  pages/
-  router/
-  services/
-  types/
-
-supabase/
-  migrations/
-```
-
-## 
-
-## Banco de dados
-
-### Principais entidades:
-- profiles
-- categories
-- suppliers
-- products
-- stock_movements
-
-##
-
-## Diferenciais
-- regras críticas implementadas no banco (não só no frontend)
-- uso de RLS para segurança real
-- migrations versionadas no repositório
-- separação clara de responsabilidades (services, lib, composables)
-- foco em código limpo e manutenção
+O projeto foi desenvolvido com foco em consistência de dados, segurança e clareza estrutural.
 
 ##
 
 ## Objetivo
 
-### Projeto desenvolvido como laboratório técnico para demonstrar:
+Consolidar conhecimentos em desenvolvimento full stack, incluindo:
 
-- domínio de CRUD real
-- modelagem de dados
-- regras de negócio
-- integração com backend remoto
-- organização de código em escala pequena/média
+* modelagem de dados
+* regras de negócio
+* CRUD completo
+* controle de acesso
+* integração com banco de dados
+* organização de projeto
 
 ##
 
+## Funcionalidades
+
+### Cadastros
+
+* categorias
+* fornecedores
+* produtos
+
+###
+
+### Operação de estoque
+
+* entrada de produtos
+* saída de produtos
+* ajuste de estoque com justificativa
+* histórico de movimentações
+
+###
+
+### Controle de acesso
+
+* autenticação por e-mail e senha
+* perfil `admin`
+* perfil `operator`
+
+###
+
+### Relatórios
+
+* estoque consolidado
+* histórico de movimentações
+* filtros por categoria, fornecedor e período
+* exportação CSV
+
+###
+
+### Alertas
+
+* produtos com estoque baixo
+* produtos inativos
+
+##
+
+## Regras de negócio
+
+* não permite estoque negativo
+* não permite movimentar produto inativo
+* quantidade deve ser maior que zero
+* ajuste exige justificativa
+* movimentações são registradas no banco
+* histórico não pode ser editado
+
+##
+
+## Estrutura do Repositório
+
+```text
+lab-management-system/
+├─ src/
+│  ├─ components/
+│  ├─ composables/
+│  ├─ lib/
+│  ├─ pages/
+│  ├─ router/
+│  ├─ services/
+│  └─ types/
+└─ supabase/
+   └─ migrations/
+```
+
+##
+
+## Stack
+
+[![My Skills](https://skillicons.dev/icons?i=vue,ts,vite,tailwind,postgres\&perline=5)](https://skillicons.dev)
+
+* Vue 3
+* TypeScript
+* Vite
+* Tailwind CSS
+* Supabase
+* PostgreSQL
+
+##
+
+## Como executar
+
+```bash
+git clone <url-do-repositorio>
+cd lab-management-system
+npm install
+```
+
+Crie o `.env`:
+
+```env
+VITE_SUPABASE_URL=https://SEU_PROJECT_REF.supabase.co
+VITE_SUPABASE_ANON_KEY=SUA_ANON_KEY
+```
+
+Configure o Supabase:
+
+```bash
+supabase login
+supabase link --project-ref SEU_PROJECT_REF
+supabase db push
+```
+
+Execute:
+
+```bash
+npm run dev
+```
+
+##
+
+## Como testar
+
+1. criar conta
+2. definir usuário como `admin`
+3. cadastrar entidades
+4. realizar movimentações
+5. acessar relatórios
+
+##
+
+## Diferenciais
+
+* regras críticas implementadas no banco
+* uso de RLS
+* migrations versionadas
+* separação de responsabilidades
+* foco em código limpo
+
+##
+
+## Contato
+
+* Portfólio: https://gilvanpoliveira.github.io
+* Email: [gilvanoliveira06@gmail.com](mailto:gilvanoliveira06@gmail.com)
