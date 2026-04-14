@@ -1,33 +1,26 @@
 <script setup lang="ts">
 import { computed, onMounted, watch } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import AppSidebar from './components/layout/AppSidebar.vue'
 import AppToastContainer from './components/ui/AppToastContainer.vue'
 import { useAccess } from './composables/useAccess'
 import { useAuth } from './composables/useAuth'
 
 const route = useRoute()
+const router = useRouter()
 const { initAuth, initialized: authInitialized, user } = useAuth()
 const { loadProfile, resetProfile, initialized: accessInitialized } = useAccess()
 
-const appReady = computed(() => {
-  if (!authInitialized.value) {
-    return false
-  }
+const appReady = computed(() => authInitialized.value && accessInitialized.value)
 
-  if (!user.value) {
-    return accessInitialized.value
-  }
-
-  return accessInitialized.value
-})
+function isAuthScreen(path: string) {
+  return path === '/login'
+}
 
 onMounted(async () => {
   await initAuth()
 
-  if (user.value) {
-    await loadProfile()
-  } else {
+  if (!user.value) {
     resetProfile()
   }
 })
@@ -37,15 +30,22 @@ watch(
   async (nextUser) => {
     if (nextUser) {
       await loadProfile()
+
+      if (isAuthScreen(route.path)) {
+        await router.push('/')
+      }
+
       return
     }
 
     resetProfile()
+
+    if (!isAuthScreen(route.path)) {
+      await router.push('/login')
+    }
   },
+  { immediate: true },
 )
-function isAuthScreen(path: string) {
-  return path === '/login'
-}
 </script>
 
 <template>
@@ -55,7 +55,7 @@ function isAuthScreen(path: string) {
     <template v-if="!appReady">
       <main class="flex min-h-screen items-center justify-center px-6">
         <div class="rounded-2xl border border-zinc-800 bg-zinc-900 px-6 py-4 text-sm text-zinc-400">
-          Inicializando aplicação...
+          Inicializando aplicacao...
         </div>
       </main>
     </template>

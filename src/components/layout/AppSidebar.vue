@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
+import { getBackendLabel } from '../../lib/backend'
 import { useAccess } from '../../composables/useAccess'
 import { useAuth } from '../../composables/useAuth'
 
 const route = useRoute()
-const { user, signOut, loading } = useAuth()
+const { user, signOut, loading, backendMode } = useAuth()
 const { isAdmin, profile } = useAccess()
 
 const links = computed(() => {
@@ -15,19 +16,19 @@ const links = computed(() => {
       { label: 'Categorias', to: '/categories' },
       { label: 'Produtos', to: '/products' },
       { label: 'Fornecedores', to: '/suppliers' },
-      { label: 'Movimentações', to: '/movements' },
-      { label: 'Relatórios', to: '/reports' },
-      { label: 'Rel. Movimentações', to: '/reports/movements' },
+      { label: 'Movimentacoes', to: '/movements' },
+      { label: 'Relatorios', to: '/reports' },
+      { label: 'Rel. Movimentacoes', to: '/reports/movements' },
       { label: 'Alertas', to: '/alerts' },
-      { label: 'Usuários', to: '/admin/users' },
+      { label: 'Usuarios', to: '/admin/users' },
     ]
   }
 
   return [
     { label: 'Dashboard', to: '/' },
-    { label: 'Movimentações', to: '/movements' },
-    { label: 'Relatórios', to: '/reports' },
-    { label: 'Rel. Movimentações', to: '/reports/movements' },
+    { label: 'Movimentacoes', to: '/movements' },
+    { label: 'Relatorios', to: '/reports' },
+    { label: 'Rel. Movimentacoes', to: '/reports/movements' },
     { label: 'Alertas', to: '/alerts' },
   ]
 })
@@ -43,12 +44,14 @@ const userName = computed(() => {
     return profile.value.full_name
   }
 
-  return user.value?.email ?? 'Usuário'
+  return user.value?.email ?? 'Usuario'
 })
 
 const roleLabel = computed(() => {
   return profile.value?.app_role === 'admin' ? 'Administrador' : 'Operador'
 })
+
+const backendLabel = computed(() => getBackendLabel(backendMode.value))
 </script>
 
 <template>
@@ -56,7 +59,7 @@ const roleLabel = computed(() => {
     <div>
       <h1 class="text-xl font-semibold tracking-tight text-zinc-100">Lab Management System</h1>
       <p class="mt-2 text-sm text-zinc-400">
-        Estoque operacional · laboratório técnico
+        Estoque operacional · laboratorio tecnico
       </p>
     </div>
 
@@ -77,7 +80,7 @@ const roleLabel = computed(() => {
     </nav>
 
     <div class="mt-auto rounded-2xl border border-zinc-800 bg-zinc-950/60 p-4">
-      <p class="text-xs uppercase tracking-[0.2em] text-zinc-500">Sessão</p>
+      <p class="text-xs uppercase tracking-[0.2em] text-zinc-500">Sessao</p>
 
       <p class="mt-2 text-sm font-medium text-zinc-100">
         {{ userName }}
@@ -87,11 +90,14 @@ const roleLabel = computed(() => {
         {{ user?.email }}
       </p>
 
-      <span
-        class="mt-3 inline-flex rounded-full border border-zinc-700 px-2.5 py-1 text-xs font-medium text-zinc-300"
-      >
-        {{ roleLabel }}
-      </span>
+      <div class="mt-3 flex flex-wrap gap-2">
+        <span class="inline-flex rounded-full border border-zinc-700 px-2.5 py-1 text-xs font-medium text-zinc-300">
+          {{ roleLabel }}
+        </span>
+        <span class="inline-flex rounded-full border border-zinc-700 px-2.5 py-1 text-xs font-medium text-zinc-300">
+          {{ backendLabel }}
+        </span>
+      </div>
 
       <button
         type="button"
