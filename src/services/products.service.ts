@@ -1,9 +1,23 @@
-import { supabase } from '../lib/supabase'
+import { getBackendMode } from '../lib/backend'
+import {
+  countDemoProducts,
+  createDemoProduct,
+  deleteDemoProduct,
+  listDemoProducts,
+  listDemoProductStockSummary,
+  updateDemoProduct,
+} from '../lib/demo'
+import { getSupabaseClient } from '../lib/supabase'
 import type { CreateProductPayload, Product, ProductStockSummary, UpdateProductPayload } from '../types/product'
 
 const TABLE_NAME = 'products'
 
 export async function listProducts(): Promise<Product[]> {
+  if (getBackendMode() === 'demo') {
+    return listDemoProducts()
+  }
+
+  const supabase = getSupabaseClient()
   const { data, error } = await supabase
     .from(TABLE_NAME)
     .select('*')
@@ -17,6 +31,11 @@ export async function listProducts(): Promise<Product[]> {
 }
 
 export async function createProduct(payload: CreateProductPayload): Promise<Product> {
+  if (getBackendMode() === 'demo') {
+    return createDemoProduct(payload)
+  }
+
+  const supabase = getSupabaseClient()
   const { data, error } = await supabase
     .from(TABLE_NAME)
     .insert(payload)
@@ -34,6 +53,11 @@ export async function updateProduct(
   productId: string,
   payload: UpdateProductPayload,
 ): Promise<Product> {
+  if (getBackendMode() === 'demo') {
+    return updateDemoProduct(productId, payload)
+  }
+
+  const supabase = getSupabaseClient()
   const { data, error } = await supabase
     .from(TABLE_NAME)
     .update(payload)
@@ -49,6 +73,12 @@ export async function updateProduct(
 }
 
 export async function deleteProduct(productId: string): Promise<void> {
+  if (getBackendMode() === 'demo') {
+    deleteDemoProduct(productId)
+    return
+  }
+
+  const supabase = getSupabaseClient()
   const { error } = await supabase
     .from(TABLE_NAME)
     .delete()
@@ -60,6 +90,11 @@ export async function deleteProduct(productId: string): Promise<void> {
 }
 
 export async function countProducts(): Promise<number> {
+  if (getBackendMode() === 'demo') {
+    return countDemoProducts()
+  }
+
+  const supabase = getSupabaseClient()
   const { count, error } = await supabase
     .from(TABLE_NAME)
     .select('*', { count: 'exact', head: true })
@@ -72,6 +107,11 @@ export async function countProducts(): Promise<number> {
 }
 
 export async function listProductStockSummary(): Promise<ProductStockSummary[]> {
+  if (getBackendMode() === 'demo') {
+    return listDemoProductStockSummary()
+  }
+
+  const supabase = getSupabaseClient()
   const { data, error } = await supabase
     .from('product_stock_summary')
     .select('*')

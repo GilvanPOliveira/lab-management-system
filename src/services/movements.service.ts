@@ -1,7 +1,14 @@
-import { supabase } from '../lib/supabase'
+import { getBackendMode } from '../lib/backend'
+import { countDemoMovements, createDemoMovement, listDemoMovements } from '../lib/demo'
+import { getSupabaseClient } from '../lib/supabase'
 import type { CreateMovementPayload, MovementWithProduct } from '../types/movement'
 
 export async function createMovement(payload: CreateMovementPayload) {
+  if (getBackendMode() === 'demo') {
+    return createDemoMovement(payload)
+  }
+
+  const supabase = getSupabaseClient()
   const { data, error } = await supabase.rpc('create_stock_movement', {
     p_product_id: payload.product_id,
     p_movement_type: payload.movement_type,
@@ -18,6 +25,11 @@ export async function createMovement(payload: CreateMovementPayload) {
 }
 
 export async function listMovements(): Promise<MovementWithProduct[]> {
+  if (getBackendMode() === 'demo') {
+    return listDemoMovements()
+  }
+
+  const supabase = getSupabaseClient()
   const { data, error } = await supabase
     .from('stock_movements')
     .select(`
@@ -37,6 +49,11 @@ export async function listMovements(): Promise<MovementWithProduct[]> {
 }
 
 export async function countMovements(): Promise<number> {
+  if (getBackendMode() === 'demo') {
+    return countDemoMovements()
+  }
+
+  const supabase = getSupabaseClient()
   const { count, error } = await supabase
     .from('stock_movements')
     .select('*', { count: 'exact', head: true })
